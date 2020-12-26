@@ -24,7 +24,6 @@ int main() {
     Swap(ptrx, ptry);
     std::cout<<"After call: x = "<<x<<" and y = "<<y<<"\n"<<std::endl;
 
-
     std::cout<<"Demonstrating the factorial function."<<std::endl;
     Factorial(ptrx, ptrz);
     std::cout<<"Factorial output = "<<z<<std::endl;

@@ -49,3 +49,5 @@ part 16: basic debugging
 part 17: uniform initialization (c++11 using braces {} to initialize)
 part 18: pointers
 part 19: assignment 1, pointer arithmetic functions
+part 20: references: He explains it as references are just an alias to a variable (it's the address of)
+part 21: assignment 2, arithmetic functions with references
