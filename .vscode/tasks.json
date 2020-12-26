@@ -6,6 +6,7 @@
             "command": "/usr/bin/g++",
             "args": [
                 "-g",
+                "-std=c++14",
                 //"${file}",
                 "${fileDirname}/*.cpp",
                 "-o",
