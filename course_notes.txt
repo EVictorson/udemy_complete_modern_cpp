@@ -443,3 +443,127 @@ std::cout<<s<<std::endl;
 // clear the contents of the stringstream
 ss.str("");
 // or can use ss.str(std::string());
+
+p80 - string assignment 2
+
+p81 - user defined literals
+literals suffixes are used to force all numeric operands to be of the right type
+as opposed to relying on the c++ compiler's rules for promoting / demoting numeric expressions.
+
+user defined literals
+a literal is a fixed value that appears directly in the code
+creating custom literals provides syntactic shortcuts and increases type safety
+
+e.g.
+Temperature temp{82.5} // is this F or c?
+Temperature temp{82.5_F}  // use custom literal to specify F
+
+to use a user defined literal need to use 
+<return type> operator""_<literal>(<arguments>)
+
+user defined literals should always being with an underscore
+you cannot redefine the meaning of built in literal suffixes
+only the following types can be suffixed to make a user defined literal:
+unsigned long long, long double, const char*, char
+literal operator functions cannot be member functions, they must be global
+
+literal types are those that are allowed with constant expressions
+
+p82 - constexpr
+used to represent and expression that is constant
+causes expressions to possibly be evaluated at compile time
+can be applied to variable declarations or functions
+may increase the performance of the code as computation is done at compile time
+
+const vs constexpr:
+initialization of a const variable can be deferred until runtime
+a constexpr variable must be initialized at compile time
+all constexpr variables are const, but not the other way around
+
+use const keyword to indicate the value cannot be modified
+use constexpr keyword to create expressions that can be evaluated at compile time
+
+p83 - std::initializer_list
+lightweight proxy object that represents an array of objects
+constructed automatically from a braced list of elements
+it's not a true container, but has similar behavior
+provides access to its elements through iterators
+defined in <initializer_list> header file
+
+p84 - vectors
+dynamic arrays
+
+p85 - string assignment 3
+
+p86 - C++ unions
+gives the ability to represent all the members in the same memory
+just like a structure or class, except everything shares the same memory
+thus, it saves space, which can be useful for embedded platforms
+several disadvantages:
+no way to know what type it holds
+nested types with non-default constructors delete the default constructor of the union
+cannot assign objects of user-defined types directly to a union member
+user defined types are not destroyed implicitly
+cannot have a base class
+cannot derive from a union
+
+S8 OBJECT ORIENTED PROGRAMMING
+
+p88 - source code example
+p89 - Inheritance and composition
+
+in OOP the system is made up of objects
+objects are instances of a class
+classes and objects are related
+collaboration between objects
+define the bevahior of the system
+
+Composition - object is composed in another object
+represents a "has a" relationship
+reuse
+
+Inheritace - class inherits the features of another class
+reuse and inherit behavior
+represents a "is a " relationship
+
+p90 - inheritance access modifiers
+
+access modifiers
+class Base{}
+
+class child : public Base{}
+-> only public and protected members of base are accessible in child
+
+class child : private Base{}
+-> all members of the base are inherited as private members in child
+-> private members of base are inherited but are not accessible
+
+class child : protected Base{}
+-> protected and public members of base are inherited as protected members in child
+
+Ojbect construction:
+constructors execute from base to child
+destructors execute from child to base
+base data members will be part of the child object
+
+p91 - overview of banking project (project pt 1)
+
+
+p94 - inherited constructors
+
+p95 - virtual keyword
+
+p96 - virtual mechanism internals
+polymorphism:
+different forms of the function are provided
+the call is resolved at compile time or runtime
+if resolved at compile time it's called compile time polymorphism, or compile time binding
+function overloading, operator overloading, and templates are examples of compile time polymorphism
+
+sometimes we don't know until runtime which function should be invoked
+this is runtime polymorphism or dynamic binding
+implemented through virtual mechanism
+compiler inserts code to invoke the correct function at runtime
+automatically generated through the virtual keyword
+such functions are called polymorphic functions
+should be invoked only through a pointer or reference
