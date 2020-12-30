@@ -13,7 +13,8 @@ protected:
 
 public:
     Account(const std::string &name, float balance);
-    ~Account();
+    // base classes should have a virtual destructor
+    virtual ~Account();
     const std::string GetName()const;
     float GetBalance()const;
     int GetAccountNo()const;

@@ -567,3 +567,286 @@ compiler inserts code to invoke the correct function at runtime
 automatically generated through the virtual keyword
 such functions are called polymorphic functions
 should be invoked only through a pointer or reference
+
+through virtual mechanism the compiler inserts code to invoke the correct function at runtime
+
+when compiler compiles a class with virtual functions it creates an array of pointers to virtual functions
+virtual table is created that contains the addresses of virtual functions
+non-virtual functions do not appear in the virtual table
+the starting address of virtual table is stored in special member variable called the virtual pointer
+the virtual pointer is automatically created by the compiler if the class has virtual functions
+
+if instead we create a local object, we create a derived object on the heap with a pointer of type
+base class, pointing to a derived class, the derived destructor will not be called.
+To fix this we need to declare the base class destructor to be virtual
+
+p98 - override and final specifier
+
+if the class is marked as final it cannot be derived from
+
+we can explicitly tell the compiler to override a base class function with the override specifier
+it is considered good practice to use the override specifier anytime we override a base class function
+
+p99 - upcasting and downcasting
+
+upcasting is when we assign a child class to a base class object pointer or reference
+we can then call the child class methods through the base class pointer or reference
+
+if we assign a concrete child to concrete base the compiler will perform object slicing:
+object slicing is when the compiler deliberately removes some part of an object
+occurs when a child class object is assigned to a concrete base class object
+since the size of the child class object may be more than its base, some part of the memory may get overwritten
+to prevent this, the compiler slices the child object, effectively removing the memory that contains its attributes
+the object is then copied into the base object
+
+to prevent object slicing we use a pointer.
+
+downcasting is when we cast a base class pointer to a child class pointer
+e.g.
+Checking *pChecking = static_cast<Checking> *Account;
+
+
+p100 - RTTI basics
+RTTI = run-time type information
+used by including typeinfo header and invoking typeid()
+or alternatively checking if dynamic_casting is possible
+should be avoided when possible
+
+p101 - RTTI operators
+typid() or dynamic_cast
+
+p102 - abstract classes
+an abstract class is specified by creating atleast one pure virtual function in the class
+e.g. virtual Foo() = 0; (marked with the pure specifier =0)
+abstract classes can contain other members (data, non-virtual functions, etc)
+they cannot be instantiated, but can be used through a pointer or reference
+abstract classes establish a contract with clients
+they are used for creating an interface
+
+pure virtual function is specified by marking with =0
+usually does not have an implementation
+cannot be invoked
+do not have an entry in the vtable
+must be overriden by the derived classes
+
+
+p103 multiple (diamond) inheritance
+without virtual inheritance diamond inheritance will instantiate the base class twice
+
+e.g. stream base class, child classes from stream, outputstream and input stream
+iostream is then derived from both outputstream and inputstream
+
+if we specify outputstream and inputstream to inherit from stream virtually we avoid the double
+instantiation issue
+e.g.
+class InputStream : virtual public Stream {}
+
+S9 - EXCEPTION HANDLING
+
+p104 exception handling basics
+
+try:
+creates a scope / block and exception causing code appears here
+can contain other try-catch statements
+
+throw:
+throws an exception from the try block
+exception is object that is constructed in throw statement
+
+catch:
+handler that catches the exception object
+should appear just after the try block
+multiple catch blocks can exist
+
+p105 - multiple catch blocks
+
+there should always be as many catch blocks as throw statements
+OR use one that catches base class std::exception
+
+p106 - stack unwinding
+with exception handling, if an exception is thrown, code that calls delete on an object afterwards
+may never be called.
+
+to prevent this use RAII (smart pointers)
+
+p107 - nested exceptions
+nested exceptions allow us to rethrow exceptions up a level with more detailed information
+
+p108 - constructor and destructor exceptions
+if exception is thrown in constructor to a pointer, destructor will not be called
+they will be called for concrete objects (not for pointer objects)
+- another reason to use smart pointers and not raw pointers with exception handling
+
+destructor should not call exceptions
+the reason being because of stack unwinding
+
+p109 - noexcept keyword
+
+keyword applied to both function definition and declaration
+indicates that the function does not throw exceptions
+allows compiler to optimize function code because it does not need to generate stack unwinding code
+an exception from such function terminates the program
+- stack may or may not be unwound
+
+in c++11 onwards destructors are implicitly keyworded with noexcept
+meaning destructors will not throw exceptions
+
+functions that are sure not to throw exceptions should be marked noexcept
+if a function invokes any library function it is dangerous to mark it noexcept
+
+noexcept is also an operator that accepts an expression that will return true or false based on inputs 
+by default noexcept means noexcept(true)
+noexcept(false) means the function can throw exceptions
+
+we can use noexcept() to check if a function should be able to throw exceptions based on 
+whether other functions can throw exceptions
+e.g.
+
+void Test(int x) {
+  throw x;
+}
+
+// at compile time will check exception specification of Test(x) and apply it to sum()
+int sum(int x, int y) noexcept(noexcept(Test(x)) {
+  Test(x);
+  return x + y;
+}
+
+
+S10 - FILE INPUT AND OUTPUT
+
+p110 - raw string literals
+
+used to prevent recognition of special characters in strings
+
+C++11 provides raw string literals so that special characters are ignored
+such as the case when we have:
+e.g. std::string filename{"C:\temp\newfile.txt"};
+this will parse a tab (\t) and newline (\n)
+in order to get around this c++11 has raw string liters:
+
+std::string filename{R"(C:\temp\newfile.txt")};
+
+p111 - filesystem library (this is marked as deprecated, so let's skip)
+
+filesystem library is introduced in C++17
+because it is not yet finalized (as of c++17) it resides in the experimental directory
+#include <experimental/filesystem>
+
+p112 - file IO
+
+ofstream - write to an output stream
+ifstream - read from an input stream
+fstream - write / read strea,
+
+must include <fstream> header
+
+all classes can be used for both text and binary IO
+is_open() function returns true or false based on if it's been opened
+
+p113 - error handling
+
+p114 - copy utility example
+
+p115 - character io and seeking
+
+p116 - binary file io
+
+p117 - assignment 1
+implement binary version of utility example
+
+p118 - assignment 2
+modified version of assignment 1
+
+S11 TEMPLATES
+
+p120 - source code example
+p121 - introduction to templates
+useful for generic programming
+such components can be reused in different situations
+creates high performance algorithms and classes
+compile time, no runtime costs are involved
+libraries sutch as ATL, WTL, boost, POCO, ACE, use templates for implementation
+
+function templates
+function that accepts template type arguments
+always begin with template keyword
+template type argument is called type name
+can accept any type
+the template type can also be used as the return type
+e.g.
+template<typename T>
+T Function(T arg) {
+}
+
+p122 - assignment 1
+
+p123 - template argument deduction
+template argument deduction is the process of deducing the types in a template
+each function argument is examined
+the corresponding type argument is deduced from the argument
+type conversions are not performed
+after deduction, the template is instantiated
+override deduction by specifying types in template argument list
+
+template instantiation:
+a template function or class only acts as a blueprint
+the compiler generates code from the blueprint at compile time
+known as template instantiation
+it occurs implicitely when:
+- a function template is invoked
+- taking address of a function template
+- use explicit instatiation of a function template
+- create explicit specialization of a function template
+for template instantiation to work the full definition of the template should be available
+for this reason, templates are defined in header files (definition implemented in header file)
+
+p124 - use a disassembler to look at the assembly code from the previous assignment
+Note what happens if the function template is not invoked.
+
+can use disassembler with:
+objdump -d -S <path_to_binary>
+
+T ArraySum(T *parr, int arrsize) {
+ acd:	55                   	push   %rbp
+ ace:	48 89 e5             	mov    %rsp,%rbp
+ ad1:	48 89 7d e8          	mov    %rdi,-0x18(%rbp)
+ ad5:	89 75 e4             	mov    %esi,-0x1c(%rbp)
+    T sum{};
+ ad8:	c7 45 f8 00 00 00 00 	movl   $0x0,-0x8(%rbp)
+    for (int i=0; i<arrsize; ++i) {
+ adf:	c7 45 fc 00 00 00 00 	movl   $0x0,-0x4(%rbp)
+ ae6:	8b 45 fc             	mov    -0x4(%rbp),%eax
+ ae9:	3b 45 e4             	cmp    -0x1c(%rbp),%eax
+ aec:	7d 1f                	jge    b0d <_Z8ArraySumIiET_PS0_i+0x40>
+        sum += parr[i];
+ aee:	8b 45 fc             	mov    -0x4(%rbp),%eax
+ af1:	48 98                	cltq   
+ af3:	48 8d 14 85 00 00 00 	lea    0x0(,%rax,4),%rdx
+ afa:	00 
+ afb:	48 8b 45 e8          	mov    -0x18(%rbp),%rax
+ aff:	48 01 d0             	add    %rdx,%rax
+ b02:	8b 00                	mov    (%rax),%eax
+ b04:	01 45 f8             	add    %eax,-0x8(%rbp)
+    for (int i=0; i<arrsize; ++i) {
+ b07:	83 45 fc 01          	addl   $0x1,-0x4(%rbp)
+ b0b:	eb d9                	jmp    ae6 <_Z8ArraySumIiET_PS0_i+0x19>
+    return sum;
+ b0d:	8b 45 f8             	mov    -0x8(%rbp),%eax
+}
+ b10:	5d                   	pop    %rbp
+ b11:	c3                   	retq 
+
+I honestly can't see what's different other than they just don't get called.
+
+
+p125 - explicit specialization
+
+template specialized for a particular type
+provides correct semantics for some datatype
+or implement an algorithm optimally for a specific type
+explicitly specialized functions must be defined in a .cpp file
+primary template definition should occur before specialization
+
+
+

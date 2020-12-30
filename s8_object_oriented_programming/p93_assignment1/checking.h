@@ -3,8 +3,8 @@
 
 #include "account.h"
 
-class Checking : public Account {
-    float m_AccMin{50.0};
+class Checking final : public Account {
+    float m_MinimumBalance{50.0};
 
 public:
     // with c++11 onwards you can inherit the base class constructors with:
@@ -15,7 +15,8 @@ public:
     //Checking(const std::string &name, float balance);
     ~Checking();
 
-    void Withdraw(float amount);
+    void Withdraw(float amount) override;
+    float GetMinimumBalance() const;
 
 };
 

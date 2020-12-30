@@ -3,6 +3,7 @@
 #include "savings.h"
 #include "transaction.h"
 #include <iostream>
+#include <typeinfo>
 
 int main() {
     /*
@@ -17,10 +18,10 @@ int main() {
     //checking_acct.Withdraw(960);
 
     Transaction(&checking_acct);
+    std::cout<<std::endl;
 
     Savings savings_acct("Bob", 100, 0.05);
     Transaction(&savings_acct);
-
 
     return 0;
 }

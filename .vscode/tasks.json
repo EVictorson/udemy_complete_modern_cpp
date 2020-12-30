@@ -6,11 +6,14 @@
             "command": "/usr/bin/g++",
             "args": [
                 "-g",
-                "-std=c++14",
+                "-lstdc++fs",
+                "-std=c++17",
                 //"${file}",
+                // needed for experimental/filesystem
                 "${fileDirname}/*.cpp",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
+                "${fileDirname}/${fileBasenameNoExtension}",
+                "-lstdc++fs"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
