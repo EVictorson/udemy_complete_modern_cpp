@@ -850,3 +850,194 @@ primary template definition should occur before specialization
 
 
 
+p126 - nontype template arguments
+expression that is computed at compile time within a template argument list
+must be a constant expression (addresses, references, integrals, nullptr, enums)
+part of the template type
+used by std::being and std::end functions
+
+p127 - assignment 3
+
+p128 - perfect forwarding
+a function template acting as a member function in a class is known as a member template
+
+p129 - perfect forwarding pt2
+std::forward<>() is used to ensure that the argument type is preserved while forwarding it to initialize attributes
+
+perfect forwarding: information about the type is preserved when it is forwarded to the next function call
+when you pass things by name some information abou the type will be lost unless perfect forwarding is used
+
+
+p130 - variadic templates 1
+variadic templates can be simplified with c++17 fold expressions
+
+ellipses <...> specify a variadic template
+
+p132 - assignment 4
+create a templated factory method
+
+p133 - class templates
+
+p134 - class template explicit specialization 1
+
+p135 - class template explicit specialization 2
+
+p136 - assignment 5
+
+p137 - class template partial specialization
+
+p138 - typedef, type alias, alias templates
+
+typedef:
+introduces a name for an existing type
+this name becomes a synonym of that type
+useful to construct shorter or more meaningful names for existing types
+simplifies declarations of some types (e.g. function pointers and templates)
+implementation details that may change can be encapsulated
+ 
+std::string is a typedef of basicstring
+
+e.g.
+typedef unsigned int UINT;
+UINT val{};
+
+typedef long long LLONG;
+LLONG elem{};
+
+typdef std::vector<std::<list<Employee>> Teams;
+Teams testingTeams;
+Teams::iterator it = testingTeams.begin();
+
+// can also be used for function pointers
+typedef const char *(*ErrorFN)(int);
+ErrorFn pfn = GetErrorMessage;
+
+c++11 introduced type alias:
+creates a name that is a synonym of existing type
+does not introdue a new type
+same as typedef declaration
+created through the using keyword
+
+e.g.
+using identifier = type;
+
+using UINT = unsigned int;
+UINT val{};
+
+using LLONG = long long;
+LLONG elem{};
+
+using Teams = std::vector<std::list<Employee>>;
+Teams testingTeams;
+Teams::iterator it = testingTeams.begin();
+
+using Errorfn = const char *(*)(int);
+ErrorFn pfn = GetErrorMessage;
+
+p139 - type traits
+
+c++11 introduced type traits, giving the ability to introspect at compile time
+type traits give the ability to introspect
+ - find the characteristics of a type at compile time
+ - transform the properties of the type
+useful in template metaprogramming
+yields highly optimized code
+will either return a boolean or a type when inspecting types
+provides template-based interface and defined in header <type_traits>
+some traits require support from the compiler
+- compiler provides intrinsics for such traits
+
+type traits are often used in templates for type introspection
+
+p140 - static assertion
+
+static_assert is new kind of declaration fo evaluating expressions
+accepts an expression and a user defined message
+used for testing an expression at compile time
+if the expression returns false, the copiler displays the specified message and compilation fails
+
+
+S12 LAMBDA EXPRESSIONS
+
+p142 - callbacks revisited - function pointers
+
+motivation:
+like accepting a function pointer, but function pointers are called by address, meaning they can't
+be optimized (inlined)
+
+p143 - function objects
+function objects are objects with an overloaded function call operator, also called a functor
+call to overloaded function call operator resembles a global function call
+can be used as a callback instead of function pointers
+more efficient than function pointers
+function objects are usually implemented as structures
+
+function pointer vs function object
+function pointer is invoked through a pointer, funtion object is invoked through an object
+fcn pointer is dynamic in nature, fcn object is static in nature
+fcn pointer can be specified at runtime, fcn object must be specified at compile time
+fcn pointer is difficult to optimize, fcn object is easy to optimize
+fcn pointers are slow, fcn objects are fast
+fcn pointers cannot store state, fcn objects can store state
+
+in c++11 an even better way is through lambda expressions
+
+p144 - lambda expressions
+defines an anonymous function object
+just a syntactic shortcut for a function object
+can be passed as an argument to a function that accepts a function object
+can accept parameters and return values
+
+typically encapsulates a few lines of code
+behaves like a normal function when invoked
+replaces function objects
+internally, implemented as a nameless function object
+used auto to provide an explicit name
+
+syntax: [] (<args>) { }
+
+[lambda introducer / capture clause]
+(arguments)
+mutable specification
+exception specification
+-> trailing return type syntax
+{ lambda body }
+
+p145 - lambda expression internals
+it's basically just a function object (functor)
+
+p146 - lambda epxression capture lis1
+
+p147 - lambda expression capture list2
+- specifies what variables to capture to be passed into the lambda expression (by ref or value)
+to specify by ref [&val]()
+to specify by value [val]()
+
+to capture all variables by ref (declared before the expression):
+[&]()
+to capture all variables by value (declared before the expression):
+[=]()
+
+to capture all variables by reference, except some by value:
+[&, =val]()
+
+
+p148 - lambda expressions capture list 3
+in order to capture class member variables, need to capture the this pointer
+[this]() {
+
+}
+
+if a lambda expression has an empty capture list it decomposes into a function pointer
+
+p149 - generalized lambda capture
+it is an enhancement to lambda expression introduced in c++14
+this feature allows creation of new variables in the capture clause
+the tpe of these variables is deduced from the type produced by the expression
+consequently, these variables must always be initialized
+if the initializer expression is a variable, the new variable can have the same or different name
+to create a reference, you have to use operator & before the variable name
+
+
+
+
