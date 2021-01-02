@@ -1,4 +1,5 @@
 #include <iostream>
+// comparator function pointer alias
 //using Comparator = bool(*)(int, int);
 template<typename T, int size, typename Comparator>
 void Sort(T(&arr)[size], Comparator comp) {

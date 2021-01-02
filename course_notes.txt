@@ -1039,5 +1039,163 @@ if the initializer expression is a variable, the new variable can have the same 
 to create a reference, you have to use operator & before the variable name
 
 
+p150 - lambda expressions assignment
+
+
+S13 STANDARD TEMPLATE LIBRARY
+
+p151 - intro to STL
+standard template library
+heart of the standard library for c++
+provides fast and reusable containers and algorithms
+relies heavily on templates, almost every component in the STL is a template
+
+core components:
+container classes, algorithms and iterators
+container classes represent data
+algorithms represent operations on the data
+iterators serve as the glue between containers and algorithms
+also include classes for concurency, random numbers, regular expressions, utilities, etc.
+
+why use STL?
+leads to quicker development time because you don't need to create the data structures
+reliable
+portable
+efficient and fast
+accurate
+makes code more readable
+lower maintenance because you don't need to maintain those data structures
+
+container types:
+sequential containers
+associative containers
+unordered containers
+
+all containers provide a function size() to get the size of the container
+clear()
+begin()
+end()
+default allocator
+all use allocator for memory management
+
+p152 - std::array
+thin wrapper over c-style static array
+supports iterators
+knows about its size
+provides random access
+can be used with c functions
+std::array cannot grow (created at compile time)
+
+the biggest advantage of using std::array is that it knows about its size
+can access by using either subscript operators or iterators
+
+iterators:
+pointer like objects
+used to access elements of container by position
+proved overloaded overats such as ++, --, *, etc
+created through begin() and end() functions (present in all containers)
+begin() returns iterator at first element of container
+end() returns iterator at element just past the end of the container
+
+p153 - std::vector
+
+behaves like a dynamic array
+grows automatically
+efficient for addition / removal at the end of the vector
+provides random access
+not good for insertion / deletion
+
+p154 - std::deque
+
+short for double ended queue
+efficient for addition/removal at both ends
+grows automatically
+provides random access
+not good for insertion / deletion except at the ends
+
+p155 - std::list and forward_list
+std::list :
+implemented as a two-way linked list
+linked list consists of nodes, each node has a pointer to the next and previous node
+efficient for insertion / deletion anywhere
+does not provide random access
+
+std::forward_list : 
+implemented as a one-way linked list
+has a small memory footprint
+efficient for insertion / deletion
+does not provide support for size
+elements are always added at the front
+
+p157 - std::set and std::multiset (associative containers)
+a set is internally implemented as a binary tree
+elements are stored in sorted order (< and > )
+values act as keys
+provides for fast search
+no random access
+elements cannot be modified directly
+
+p158 - std::map and std::multimap
+implemented as a binary tree
+stores a pair that conatins a key and value
+elements are stored in a sorted order based on a key
+provides fast search
+no random access
+keys cannot be modified directly, but values can be
+
+p160 - unordered containers
+associated containers implemented as hash tables (not binary trees like sorted ones)
+values are hashed and stored in undefined order
+fast search, insertion/deletion, but may degrade over a period of time
+std::unordered_set stores values that act as keys for hashing
+std::unordered_map stores pairs (first is used to compute hash)
+iterators are constant (cannot modify value through the iterator)
+
+implementaiton:
+hash table is dynamic array, where each element in array is known as a bucket or slot
+each element that's inserted passes through the hash function, which represents a key
+or position in the hash table 
+most imeplementations have the buckets hold a pointer to a linked list
+this allows inserting elements that have the same calculated value from the hash function
+when there are too many collisions in a hash table performance degrades
+
+load factor = entries / capacity
+
+p164  - big O notation and performance of containers
+complexity:
+amount of time taken by an algorithm to run for input of size n
+commonly represented through big O notation
+O(1) = constant time
+O(n) = linear time
+- gives rough idea about the performance of an algorithm
+
+summary:
+use vector for random access, but not insertion and deletion
+deque is preferable when elements need to be inserted and removed from both ends
+use list if frequent insertions and deletions are required
+- use forward_list for memory constrained systems
+use associative containers if lookup / search is important
+favour unordered containersr if elements need not be ordered, else use set/map
+
+p165 - algorithms 1
+
+user objectst and containers:
+compilers may define certain rules for user defined objects if they ahve to be stored in containers
+these are mostly about certain operators that have to be overloaded for the user objects
+generally, your objects should have the following operators overloaded: < > != ==
+these operators are used by various containers for sorting and searching
+
+algorithms:
+STL provies algorithms for common tasks
+- sorting, removing, searching, numeric tasks, etc
+more optimized than handwritten loops
+work with all containers regardless of the data type
+several algorithms can be customized through user-defined operations
+some containers provide specialized versions of algorithms:
+- list provides sort and remove
+- associative containers provide lower_bound, upper_bound, find
+most algorithms reside in <algorithm> header
+
+
 
 
