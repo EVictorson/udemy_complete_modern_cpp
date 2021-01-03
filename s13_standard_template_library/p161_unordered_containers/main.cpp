@@ -72,6 +72,7 @@ struct EmpEquality {
         return e1.GetId() == e2.GetId();
     }
 };
+
 void Hashes() {
     std::cout<<"Hashes()"<<std::endl;
     std::hash<std::string> h;
