@@ -1199,3 +1199,59 @@ most algorithms reside in <algorithm> header
 
 
 
+S14 CONCURRENCY
+
+p176 - task based concurrency 2
+std::async
+
+part of high level concurrency
+executes a callable object or a function in a separate thread
+returns a std::future object that provides access to the result of the callable
+include the header <future>
+
+std::async has two overloads
+one accepts a callable and arguments
+the second accepts a launch policy, callable and arguments
+
+std::launch::deferred - the task is executed synchronously
+std::launch::async - the task is executed asynchronously
+
+a call to std::async without a launch policy may not always create a new thread
+- depends on the compiler implementation
+- to force std::async to execute the task asynchronoulsy, use the asynch launch policy explicitly
+
+
+if a new thread cannot be created with async launch policy, std::system_error exception is thrown
+
+arguments can be specified in std::async
+arguments are by default passed by value
+to pass by reference, use the reference wrappers, std::ref or std::cref
+to get a value from a task, simply return it from the corresponding function
+this value is then available through the std::future object
+
+std::future
+used for communication between threads
+has a shared state that can be accessed in a different thread
+created through a std::promise object
+- created by std::async, that directly returns a future object
+- std::promise is an input channel
+- std::future is the output channel
+the thread that reads the shared state will wait until the future is ready (with the shared state)
+promise/future pair allow safe data sharing between threads
+
+p177 - launch policies
+
+p178 - wait functions
+
+p179 - using std::promise
+promise:
+
+provides a way to store a value or exception
+this is called the shared state
+this state can be accessed later from another thread through a future object
+promise/future are two endpoints of a communication channel
+one operation stores a value in a promise and the other operation will retrieve if through a future asynchonously
+these operations are synchronized, and therefore, thread-safe
+promise object can be used only once
+
+
